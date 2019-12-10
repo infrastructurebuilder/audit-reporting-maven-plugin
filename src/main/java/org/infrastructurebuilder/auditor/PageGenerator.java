@@ -62,8 +62,10 @@ public final class PageGenerator {
     sink.section1_();
 
     results.parallelStream().forEach(result -> {
-      log.info(result.getId());
-      log.info(result.getId());
+      /*
+       * prepend "id-" to result.getId() because UUIDs can start with numbers, but
+       * HTML anchors can't
+       */
       sink.link(String.format("#id-%s", result.getId()));
       sink.text(result.getName());
       sink.link_();
@@ -72,7 +74,6 @@ public final class PageGenerator {
     log.info(String.format("Beginning report sections generation (%d reporters found)", reporters.size()));
     results.parallelStream().forEach(result -> {
       log.info(String.format("Found audit result named %s", result.getName()));
-      log.info(result.getId());
       createSection(result, sink);
     });
     sink.body_();
@@ -80,9 +81,6 @@ public final class PageGenerator {
   }
 
   private void createSection(AuditorResults results, Sink sink) {
-
-    log.info(results.getId());
-    log.info(results.getId());
     sink.anchor(String.format("id-%s", results.getId()));
     sink.anchor_();
     sink.section1();
