@@ -15,6 +15,7 @@
  */
 package org.infrastructurebuilder.auditor;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -61,7 +62,9 @@ public final class PageGenerator {
     sink.text("Table of Contents");
     sink.section1_();
 
-    results.parallelStream().forEach(result -> {
+    sink.list();
+    results.stream().forEach(result -> {
+      sink.listItem();
       /*
        * prepend "id-" to result.getId() because UUIDs can start with numbers, but
        * HTML anchors can't
@@ -69,10 +72,12 @@ public final class PageGenerator {
       sink.link(String.format("#id-%s", result.getId()));
       sink.text(result.getName());
       sink.link_();
+      sink.listItem_();
     });
+    sink.list_();
 
     log.info(String.format("Beginning report sections generation (%d reporters found)", reporters.size()));
-    results.parallelStream().forEach(result -> {
+    results.stream().forEach(result -> {
       log.info(String.format("Found audit result named %s", result.getName()));
       createSection(result, sink);
     });
@@ -97,13 +102,15 @@ public final class PageGenerator {
     sink.text(results.getIntroduction());
     sink.paragraph_();
 
-    resultMetrics(results.getDescriptionHeaders(), results.getResults(), sink);
+    long duration = Duration.between(results.getTimestampStart().toInstant(), results.getTimestampEnd().toInstant())
+        .toMillis();
+    resultMetrics(results.getDescriptionHeaders(), results.getResults(), duration, sink);
 
     sink.section1_();
     sink.body_();
   }
 
-  private void resultMetrics(List<String> tableHeaders, List<AuditResult> results, Sink sink) {
+  private void resultMetrics(List<String> tableHeaders, List<AuditResult> results, long duration, Sink sink) {
     results = results.parallelStream().filter(r -> r.isReported()).collect(Collectors.toList());
     long totalFailures = results.parallelStream().filter(r -> r.isAuditFailure() && !r.isErrored()).count();
     long totalErrors = results.parallelStream().filter(r -> r.isErrored()).count();
@@ -115,6 +122,11 @@ public final class PageGenerator {
     } else {
       sink.text("Audit Failed");
     }
+    sink.paragraph_();
+
+    sink.paragraph();
+    sink.text(String.format("%d successes, %d failures, %d errors, %d total checks in %d milliseconds.",
+        results.size() - totalFailures - totalErrors, totalFailures, totalErrors, results.size(), duration));
     sink.paragraph_();
 
     sink.table();
