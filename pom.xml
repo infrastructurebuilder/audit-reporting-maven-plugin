@@ -28,7 +28,7 @@
   <name>Audit Reporting Maven Plugin</name>
 
   <properties>
-    <test.coverage.percentage.required>28</test.coverage.percentage.required>
+    <test.coverage.percentage.required>90</test.coverage.percentage.required>
   </properties>
 
   <dependencies>
@@ -83,12 +83,6 @@
           <execution>
             <id>default-descriptor</id>
             <phase>process-classes</phase>
-          </execution>
-          <execution>
-            <id>generated-helpmojo</id>
-            <goals>
-              <goal>helpmojo</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>
