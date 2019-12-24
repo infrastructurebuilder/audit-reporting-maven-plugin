@@ -15,6 +15,8 @@
  */
 package org.infrastructurebuilder.auditor;
 
+import java.io.Reader;
+import java.io.StringReader;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,9 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.maven.doxia.module.markdown.MarkdownParser;
+import org.apache.maven.doxia.parser.ParseException;
+import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.infrastructurebuilder.auditor.model.AuditResult;
 import org.infrastructurebuilder.auditor.model.AuditorResults;
@@ -79,13 +84,21 @@ public final class PageGenerator {
     log.info(String.format("Beginning report sections generation (%d reporters found)", reporters.size()));
     results.stream().forEach(result -> {
       log.info(String.format("Found audit result named %s", result.getName()));
-      createSection(result, sink);
+      try {
+        createSection(result, sink);
+      } catch (ParseException e) {
+        throw new RuntimeException(e);
+      }
     });
     sink.body_();
     log.info("Generation complete");
   }
 
-  private void createSection(AuditorResults results, Sink sink) {
+  private void createSection(AuditorResults results, Sink sink) throws ParseException {
+    Reader confidentiality = new StringReader(results.getConfidentialityStatement());
+    Reader intro = new StringReader(results.getIntroduction());
+    Parser p = new MarkdownParser();
+
     sink.anchor(String.format("id-%s", results.getId()));
     sink.anchor_();
     sink.section1();
@@ -95,11 +108,11 @@ public final class PageGenerator {
     sink.sectionTitle1_();
 
     sink.paragraph();
-    sink.text(results.getConfidentialityStatement());
+    p.parse(confidentiality, sink);
     sink.paragraph_();
 
     sink.paragraph();
-    sink.text(results.getIntroduction());
+    p.parse(intro, sink);
     sink.paragraph_();
 
     long duration = Duration.between(results.getTimestampStart().toInstant(), results.getTimestampEnd().toInstant())

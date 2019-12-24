@@ -15,14 +15,55 @@
  */
 package org.infrastructurebuilder.auditor;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
+import org.infrastructurebuilder.auditor.model.AuditResult;
+import org.infrastructurebuilder.auditor.model.AuditorResults;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class TestPageGenerator {
   @Test
-  public void testNothing() {
-    new PageGenerator(new HashMap<String, AuditReporter>());
+  public void testPageGeneration() {
+    Map<String, AuditReporter> map = new HashMap<>();
+    final List<String> results = Arrays.asList("resultA", "resultB", "resultC");
+    map.put("Test Audit Reporter", new AuditReporter() {
+
+      @Override
+      public List<AuditorResults> get() {
+        AuditResult k = new AuditResult();
+        k.setTimestampEnd(new Date());
+        k.setTimestampStart(new Date());
+        k.setDescriptions(results);
+        k.setReported(true);
+        k.setAuditFailure(true);
+        k.setErrored(false);
+        AuditorResults r = new AuditorResults();
+        r.setDescriptionHeaders(Arrays.asList("A", "B"));
+        r.setTimestampStart(new Date());
+        r.setTimestampEnd(new Date());
+        r.setIntroduction("intro");
+        r.setConfidentialityStatement("confidential!");
+        r.setId(UUID.randomUUID().toString());
+        r.setName("Auditor Results");
+        r.setResults(Arrays.asList(k));
+        return Arrays.asList(r);
+      }
+    });
+    NoopSink testSink = new NoopSink();
+    new PageGenerator(map).generate(" ", testSink);
+
+    testSink.getElements().forEach(s -> System.out.println(s));
+    assertTrue("Audit failure statement is in text elements", testSink.getElements().contains("Audit Failed"));
+    results.stream().forEach(r -> {
+      assertTrue(String.format("Results statement %s is in text elements", r), testSink.getElements().contains(r));
+    });
 
   }
 }

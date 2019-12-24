@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.infrastructurebuilder</groupId>
     <artifactId>ibparent</artifactId>
-    <version>24</version>
+    <version>26</version>
   </parent>
   <artifactId>audit-reporting-maven-plugin</artifactId>
   <version>0.1.0-SNAPSHOT</version>
@@ -28,10 +28,6 @@
   <name>Audit Reporting Maven Plugin</name>
 
   <properties>
-    <!-- Remove this when ibparent updates -->
-    <maven.bom.version>${maven.version}.2</maven.bom.version>
-    <maven.shared.utils.version>3.2.1</maven.shared.utils.version>
-
     <test.coverage.percentage.required>02</test.coverage.percentage.required>
   </properties>
 
@@ -43,6 +39,11 @@
       <version>0.1.0-SNAPSHOT</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-module-markdown</artifactId>
+      <version>1.6</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-impl</artifactId>
@@ -62,7 +63,6 @@
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-shared-utils</artifactId>
-      <version>${maven.shared.utils.version}</version>
     </dependency>
 
     <dependency>
