@@ -44,6 +44,18 @@
     </pluginManagement>
     <plugins>
       <plugin>
+        <groupId>org.infrastructurebuilder</groupId>
+        <artifactId>audit-reporting-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>execute-audits</id>
+            <goals>
+              <goal>audit</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
         <version>3.8.2</version>

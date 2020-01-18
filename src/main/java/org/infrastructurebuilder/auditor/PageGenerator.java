@@ -15,45 +15,43 @@
  */
 package org.infrastructurebuilder.auditor;
 
+import static java.util.Objects.requireNonNull;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.apache.maven.doxia.module.markdown.MarkdownParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.infrastructurebuilder.auditor.model.AuditResult;
+import org.infrastructurebuilder.auditor.model.AuditorInputSource;
 import org.infrastructurebuilder.auditor.model.AuditorResults;
+import org.infrastructurebuilder.auditor.model.io.xpp3.AuditorResultsModelXpp3ReaderEx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Named
 public final class PageGenerator {
-  private final Map<String, AuditReporter> reporters;
   private final static Logger log = LoggerFactory.getLogger(PageGenerator.class);
 
-  @Inject
-  public PageGenerator(Map<String, AuditReporter> reporters) {
-    this.reporters = reporters;
-    log.info(String.format("audit-reporting-maven-plugin found %d reporters", reporters.size()));
-  }
+  public static void generate(Path auditFile, String title, Sink sink) throws IOException, XmlPullParserException {
+    requireNonNull(auditFile);
+    requireNonNull(sink);
+    requireNonNull(title);
 
-  public void generate(String title, Sink sink) {
-    Objects.requireNonNull(sink);
-    Objects.requireNonNull(title);
-
-    log.info("Executing reports");
-    List<AuditorResults> results = reporters.values().parallelStream().map(reporter -> {
-      return reporter.get();
-    }).flatMap(List::stream).collect(Collectors.toList());
+    log.info(String.format("Loading file %s", auditFile.toString()));
+    List<AuditorResults> results;
+    try (InputStream in = java.nio.file.Files.newInputStream(auditFile)) {
+      results = new AuditorResultsModelXpp3ReaderEx().read(in, true, new AuditorInputSource()).getAudits();
+    }
+    requireNonNull(results);
 
     log.info("Generating page head and table of contents");
     sink.head();
@@ -81,7 +79,7 @@ public final class PageGenerator {
     });
     sink.list_();
 
-    log.info(String.format("Beginning report sections generation (%d reporters found)", reporters.size()));
+    log.info(String.format("Beginning report sections generation (%d reporters found)", results.size()));
     results.stream().forEach(result -> {
       log.info(String.format("Found audit result named %s", result.getName()));
       try {
@@ -94,7 +92,7 @@ public final class PageGenerator {
     log.info("Generation complete");
   }
 
-  private void createSection(AuditorResults results, Sink sink) throws ParseException {
+  private static void createSection(AuditorResults results, Sink sink) throws ParseException {
     Reader confidentiality = new StringReader(results.getConfidentialityStatement());
     Reader intro = new StringReader(results.getIntroduction());
     Parser p = new MarkdownParser();
@@ -123,7 +121,7 @@ public final class PageGenerator {
     sink.body_();
   }
 
-  private void resultMetrics(List<String> tableHeaders, List<AuditResult> results, long duration, Sink sink) {
+  private static void resultMetrics(List<String> tableHeaders, List<AuditResult> results, long duration, Sink sink) {
     results = results.parallelStream().filter(r -> r.isReported()).collect(Collectors.toList());
     long totalFailures = results.parallelStream().filter(r -> r.isAuditFailure() && !r.isErrored()).count();
     long totalErrors = results.parallelStream().filter(r -> r.isErrored()).count();

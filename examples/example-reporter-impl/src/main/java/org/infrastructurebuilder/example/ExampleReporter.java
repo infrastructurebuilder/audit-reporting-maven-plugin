@@ -16,6 +16,7 @@
 package org.infrastructurebuilder.example;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +32,8 @@ public class ExampleReporter implements AuditReporter {
   @Override
   public List<AuditorResults> get() {
     AuditResult k = new AuditResult();
+    k.setTimestampStart(new Date());
+    k.setTimestampEnd(new Date());
     k.setAuditFailure(false);
     k.setDescriptions(Arrays.asList("Row A data", "Row B data"));
     k.setErrored(false);
@@ -42,6 +45,8 @@ public class ExampleReporter implements AuditReporter {
     r.setIntroduction("Introductory paragraph.");
     r.setName("Example Audit Reporter");
     r.setResults(Arrays.asList(k));
+    r.setTimestampStart(new Date());
+    r.setTimestampEnd(new Date());
 
     return Arrays.asList(r);
   }

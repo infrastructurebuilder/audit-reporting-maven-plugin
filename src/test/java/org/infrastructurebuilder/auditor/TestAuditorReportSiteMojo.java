@@ -19,10 +19,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class TestAuditorReportMojo {
+public class TestAuditorReportSiteMojo {
   @Test
   public void testConstructor() {
-    AuditorReportMojo m = new AuditorReportMojo();
+    AuditorReportSiteMojo m = new AuditorReportSiteMojo();
     assertEquals("audits", m.getOutputName());
   }
 }
