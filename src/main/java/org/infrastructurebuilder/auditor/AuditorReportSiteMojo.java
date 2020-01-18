@@ -35,7 +35,7 @@ public class AuditorReportSiteMojo extends AbstractMavenReport {
   /**
    * Where the HTML pages of the report will be created
    */
-  @Parameter(defaultValue = "${project.reporting.outputDirectory}", property = "outputDirectory", required = true)
+  @Parameter(defaultValue = "${project.reporting.outputDirectory}", property = "audit.outputDirectory", required = true)
   private File outputDirectory;
 
   /**
