@@ -46,11 +46,15 @@
       <plugin>
         <groupId>org.infrastructurebuilder</groupId>
         <artifactId>audit-reporting-maven-plugin</artifactId>
+        <configuration>
+          <classifier>audit</classifier>
+        </configuration>
         <executions>
           <execution>
             <id>execute-audits</id>
             <goals>
               <goal>audit</goal>
+              <goal>package</goal>
             </goals>
           </execution>
         </executions>
