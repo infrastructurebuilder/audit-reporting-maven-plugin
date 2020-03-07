@@ -48,7 +48,7 @@
     <dependency>
       <groupId>org.infrastructurebuilder</groupId>
       <artifactId>auditor-api</artifactId>
-      <version>0.2.0-SNAPSHOT</version>
+      <version>0.2.0</version>
     </dependency>
 
     <dependency>

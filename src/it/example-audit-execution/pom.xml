@@ -19,7 +19,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.infrastructurebuilder.example</groupId>
   <artifactId>example-audit-execution</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>@project.version@</version>
 
   <properties>
     <test.coverage.percentage.required>00</test.coverage.percentage.required>
@@ -31,12 +31,12 @@
         <plugin>
           <groupId>org.infrastructurebuilder</groupId>
           <artifactId>audit-reporting-maven-plugin</artifactId>
-          <version>0.1.0-SNAPSHOT</version>
+          <version>@project.version@</version>
           <dependencies>
             <dependency>
               <groupId>org.infrastructurebuilder.example</groupId>
               <artifactId>example-reporter-impl</artifactId>
-              <version>0.1.0-SNAPSHOT</version>
+              <version>@project.version@</version>
             </dependency>
           </dependencies>
         </plugin>
