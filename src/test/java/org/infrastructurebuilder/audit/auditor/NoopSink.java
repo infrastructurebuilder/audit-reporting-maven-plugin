@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.infrastructurebuilder.auditor;
+package org.infrastructurebuilder.audit.auditor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NoopSink implements Sink {
   private List<String> elements = new ArrayList<>();

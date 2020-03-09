@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.infrastructurebuilder.auditor;
+package org.infrastructurebuilder.audit.auditor;
 
 import static java.util.Objects.requireNonNull;
 
@@ -29,9 +29,10 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.infrastructurebuilder.auditor.model.AuditorResults;
-import org.infrastructurebuilder.auditor.model.AuditorResultsShell;
-import org.infrastructurebuilder.auditor.model.io.xpp3.AuditorResultsModelXpp3Writer;
+import org.infrastructurebuilder.audit.AuditReporter;
+import org.infrastructurebuilder.audit.auditor.model.AuditorResults;
+import org.infrastructurebuilder.audit.auditor.model.AuditorResultsShell;
+import org.infrastructurebuilder.audit.auditor.model.io.xpp3.AuditorResultsModelXpp3Writer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -22,9 +22,9 @@ import java.util.UUID;
 
 import javax.inject.Named;
 
-import org.infrastructurebuilder.auditor.AuditReporter;
-import org.infrastructurebuilder.auditor.model.AuditResult;
-import org.infrastructurebuilder.auditor.model.AuditorResults;
+import org.infrastructurebuilder.audit.AuditReporter;
+import org.infrastructurebuilder.audit.auditor.model.AuditResult;
+import org.infrastructurebuilder.audit.auditor.model.AuditorResults;
 
 @Named("ExampleReporter")
 public class ExampleReporter implements AuditReporter {
