@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.infrastructurebuilder.auditor;
+package org.infrastructurebuilder.audit.auditor;
 
+import static org.junit.Assert.assertEquals;
+
+import org.infrastructurebuilder.audit.auditor.AuditorReportSiteMojo;
 import org.junit.Test;
 
-public class TestAuditorReportTestMojo {
+public class TestAuditorReportSiteMojo {
   @Test
   public void testConstructor() {
-    new AuditorReportTestMojo();
+    AuditorReportSiteMojo m = new AuditorReportSiteMojo();
+    assertEquals("audits", m.getOutputName());
   }
 }

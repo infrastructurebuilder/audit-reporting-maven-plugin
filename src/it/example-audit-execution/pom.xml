@@ -34,7 +34,7 @@
           <version>@project.version@</version>
           <dependencies>
             <dependency>
-              <groupId>org.infrastructurebuilder.example</groupId>
+              <groupId>org.infrastructurebuilder.audit.example</groupId>
               <artifactId>example-reporter-impl</artifactId>
               <version>@project.version@</version>
             </dependency>

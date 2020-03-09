@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.infrastructurebuilder.auditor;
+package org.infrastructurebuilder.audit.auditor;
 
 import org.apache.maven.doxia.logging.Log;
 import org.apache.maven.doxia.sink.Sink;

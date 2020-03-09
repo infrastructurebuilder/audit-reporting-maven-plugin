@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.infrastructurebuilder.auditor;
+package org.infrastructurebuilder.audit.auditor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.infrastructurebuilder.audit.auditor.AuditorReportPackageMojo;
+import org.infrastructurebuilder.audit.auditor.AuditorReportTestMojo;
 import org.junit.Test;
 
 public class TestAuditorReportPackageMojo {

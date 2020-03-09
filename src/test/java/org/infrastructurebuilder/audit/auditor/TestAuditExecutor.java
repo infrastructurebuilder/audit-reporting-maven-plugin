@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.infrastructurebuilder.auditor;
+package org.infrastructurebuilder.audit.auditor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -29,11 +29,13 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.infrastructurebuilder.auditor.model.AuditResult;
-import org.infrastructurebuilder.auditor.model.AuditorInputSource;
-import org.infrastructurebuilder.auditor.model.AuditorResults;
-import org.infrastructurebuilder.auditor.model.AuditorResultsShell;
-import org.infrastructurebuilder.auditor.model.io.xpp3.AuditorResultsModelXpp3ReaderEx;
+import org.infrastructurebuilder.audit.AuditReporter;
+import org.infrastructurebuilder.audit.auditor.AuditExecutor;
+import org.infrastructurebuilder.audit.auditor.model.AuditResult;
+import org.infrastructurebuilder.audit.auditor.model.AuditorInputSource;
+import org.infrastructurebuilder.audit.auditor.model.AuditorResults;
+import org.infrastructurebuilder.audit.auditor.model.AuditorResultsShell;
+import org.infrastructurebuilder.audit.auditor.model.io.xpp3.AuditorResultsModelXpp3ReaderEx;
 import org.infrastructurebuilder.util.config.WorkingPathSupplier;
 import org.junit.After;
 import org.junit.Before;
