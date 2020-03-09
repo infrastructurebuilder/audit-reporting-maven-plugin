@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.infrastructurebuilder.auditor;
+package org.infrastructurebuilder.audit.auditor;
 
 import static java.util.Objects.requireNonNull;
 
@@ -31,10 +31,10 @@ import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.sink.Sink;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.infrastructurebuilder.auditor.model.AuditResult;
-import org.infrastructurebuilder.auditor.model.AuditorInputSource;
-import org.infrastructurebuilder.auditor.model.AuditorResults;
-import org.infrastructurebuilder.auditor.model.io.xpp3.AuditorResultsModelXpp3ReaderEx;
+import org.infrastructurebuilder.audit.auditor.model.AuditResult;
+import org.infrastructurebuilder.audit.auditor.model.AuditorInputSource;
+import org.infrastructurebuilder.audit.auditor.model.AuditorResults;
+import org.infrastructurebuilder.audit.auditor.model.io.xpp3.AuditorResultsModelXpp3ReaderEx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
