@@ -32,7 +32,7 @@ Auditor pom.xml
 
 Now, we need to write a class that satisfies the following requirements:
 
-- the class must be annotated with @Named for javax and sisu injection
+- the class must be annotated with @javax.inject.Named for javax and sisu injection
 - the class must implement the AuditReporter interface defined in the auditor-api
 
 This is easier than it sounds. The AuditReporter interface requires only one method with signature `public List<AuditorResults> get()`.
