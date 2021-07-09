@@ -50,7 +50,7 @@ public final class AuditExecutor {
 
   public void execute(Path file) throws IOException {
     log.info("Executing reports");
-    List<AuditorResults> results = reporters.values().parallelStream().map(reporter -> {
+    List<AuditorResults> results = reporters.values().stream().map(reporter -> {
       return reporter.get();
     }).flatMap(List::stream).collect(Collectors.toList());
 
