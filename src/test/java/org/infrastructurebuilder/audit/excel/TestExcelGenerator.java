@@ -37,6 +37,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -55,7 +56,7 @@ public class TestExcelGenerator {
   }
 
   @Test
-  public void tesExcelGeneration() throws IOException, XmlPullParserException {
+  public void testExcelGeneration() throws IOException, XmlPullParserException {
     final XSSFWorkbook workbook = new XSSFWorkbook();
     final List<AuditorResults> results;
     Path inputFile = path;
@@ -85,14 +86,13 @@ public class TestExcelGenerator {
         assertNotNull("cell exists", cell);
       }
     });
-    try {
-      FileOutputStream out = new FileOutputStream(new File("target/testAuditsExcelFile.xlsx"));
+    try (FileOutputStream out = new FileOutputStream(new File("target/testAuditsExcelFile.xlsx"))) {
       workbook.write(out);
-      out.close();
       workbook.close();
       assertNotNull("excel file exists", out);
     } catch (IOException e) {
       e.printStackTrace();
+      fail("Threw an exception while attempting to write the workbook!");
     }
   }
 }

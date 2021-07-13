@@ -29,7 +29,7 @@
   <name>Audit Reporting Maven Plugin</name>
 
   <properties>
-    <test.coverage.percentage.required>72</test.coverage.percentage.required>
+    <test.coverage.percentage.required>74</test.coverage.percentage.required>
   </properties>
 
   <dependencyManagement>
@@ -79,12 +79,10 @@
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
-      <version>4.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-ooxml</artifactId>
-      <version>4.1.0</version>
     </dependency>
 
     <dependency>

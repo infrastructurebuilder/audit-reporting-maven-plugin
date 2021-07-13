@@ -55,9 +55,8 @@
             <id>execute-audits</id>
             <goals>
               <goal>audit</goal>
-              <goal>package</goal>
               <goal>excel</goal>
-              <goal>excel-generator</goal>
+              <goal>package</goal>
             </goals>
           </execution>
         </executions>

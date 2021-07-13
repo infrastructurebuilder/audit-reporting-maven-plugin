@@ -17,6 +17,7 @@ package org.infrastructurebuilder.audit.excel;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.infrastructurebuilder.audit.auditor.AuditorReportTestMojo;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class TestExcelGeneratorPackageMojo {
   public void testNoSuchFileException() throws MojoExecutionException, MojoFailureException {
     ExcelGeneratorPackageMojo mojo = new ExcelGeneratorPackageMojo();
     Map<String, String> map = new HashMap<String, String>();
-    map.put(ExcelGeneratorTestMojo.EXCEL_RESULT_XLSX, "non/existent/file");
+    map.put(AuditorReportTestMojo.AUDITOR_RESULT_XML, "non/existent/file");
     mojo.setPluginContext(map);
     mojo.execute();
   }

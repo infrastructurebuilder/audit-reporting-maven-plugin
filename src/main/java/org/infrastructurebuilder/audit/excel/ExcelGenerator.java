@@ -40,12 +40,12 @@ public final class ExcelGenerator {
 
   private final static Logger log = LoggerFactory.getLogger(ExcelGenerator.class);
 
-  public static void generate(Path inputFile, Path output) throws IOException, XmlPullParserException {
+  public static void generate(Path input, Path output) throws IOException, XmlPullParserException {
 
     XSSFWorkbook workbook = new XSSFWorkbook();
 
     List<AuditorResults> results;
-    try (InputStream in = java.nio.file.Files.newInputStream(inputFile)) {
+    try (InputStream in = java.nio.file.Files.newInputStream(input)) {
       results = new AuditorResultsModelXpp3ReaderEx().read(in, true, new AuditorInputSource()).getAudits();
     }
     requireNonNull(results);
@@ -93,14 +93,14 @@ public final class ExcelGenerator {
         }
       }
     });
-    try {
-      FileOutputStream out = new FileOutputStream(String.valueOf(output));
+    try (FileOutputStream out = new FileOutputStream(String.valueOf(output))) {
       workbook.write(out);
-      out.close();
       workbook.close();
       log.info("Excel file written successfully");
     } catch (IOException e) {
       e.printStackTrace();
+      log.error(String.valueOf(e));
+      throw new IOException(e);
     }
   }
 }
