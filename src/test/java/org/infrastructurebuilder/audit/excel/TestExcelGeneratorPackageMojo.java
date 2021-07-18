@@ -24,10 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TestExcelGeneratorPackageMojo {
-  @Test
-  public void testConstructor() {
-    new ExcelGeneratorPackageMojo();
-  }
 
   @Test(expected = MojoExecutionException.class)
   public void testNoSuchFileException() throws MojoExecutionException, MojoFailureException {

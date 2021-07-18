@@ -28,7 +28,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +41,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class TestExcelGenerator {
-  private TestingPathSupplier wps = new TestingPathSupplier();
+  private final TestingPathSupplier wps = new TestingPathSupplier();
   private Path path;
 
   @Before
@@ -57,42 +56,44 @@ public class TestExcelGenerator {
 
   @Test
   public void testExcelGeneration() throws IOException, XmlPullParserException {
-    final XSSFWorkbook workbook = new XSSFWorkbook();
-    final List<AuditorResults> results;
-    Path inputFile = path;
-    Path output = Paths.get(".xlsx");
+    try (XSSFWorkbook workbook = new XSSFWorkbook()) {
+      final List<AuditorResults> results;
+      Path input = path;
+      Path output = Paths.get("target/testAuditsExcelFile.xlsx");
 
-    try (InputStream in = java.nio.file.Files.newInputStream(path)) {
-      results = new AuditorResultsModelXpp3ReaderEx().read(in, true, new AuditorInputSource()).getAudits();
-    }
-    ExcelGenerator.generate(inputFile, output);
-
-    results.stream().forEach(result -> {
-      String sheetName = result.getName();
-      XSSFSheet sheet = workbook.createSheet(sheetName);
-      assertNotNull("results exist", results);
-      assertNotNull("names exist", result.getName());
-      assertNotNull("headers exist", result.getDescriptionHeaders());
-      assertEquals("sheetname should be Testing Audit", "Testing Audit", "Testing Audit");
-
-      List<String> eHeaders = new ArrayList<>();
-      eHeaders.addAll(result.getDescriptionHeaders());
-      int headerCellNum = 0;
-      Row headerRow = sheet.createRow(0);
-      for (String eHeader : eHeaders) {
-        Cell cell = headerRow.createCell(headerCellNum++);
-        cell.setCellValue(eHeader);
-        assertNotNull("eHeaders exist", eHeaders);
-        assertNotNull("cell exists", cell);
+      try (InputStream in = java.nio.file.Files.newInputStream(path)) {
+        results = new AuditorResultsModelXpp3ReaderEx().read(in, true, new AuditorInputSource()).getAudits();
       }
-    });
-    try (FileOutputStream out = new FileOutputStream(new File("target/testAuditsExcelFile.xlsx"))) {
-      workbook.write(out);
-      workbook.close();
-      assertNotNull("excel file exists", out);
+      ExcelGenerator.generate(input, output);
+
+      results.stream().forEach(result -> {
+        String sheetName = result.getName();
+        XSSFSheet sheet = workbook.createSheet(sheetName);
+        assertNotNull("results exist", results);
+        assertNotNull("names exist", result.getName());
+        assertNotNull("headers exist", result.getDescriptionHeaders());
+        assertEquals("sheetName should be Testing Audit", "Testing Audit", "Testing Audit");
+
+        List<String> eHeaders = new ArrayList<>(result.getDescriptionHeaders());
+        assertNotNull("eHeaders exist", eHeaders);
+        int headerCellNum = 0;
+        Row headerRow = sheet.createRow(0);
+        for (String eHeader : eHeaders) {
+          Cell cell = headerRow.createCell(headerCellNum++);
+          cell.setCellValue(eHeader);
+          assertNotNull("cell exists", cell);
+        }
+      });
+      try (FileOutputStream out = new FileOutputStream(String.valueOf(output))) {
+        workbook.write(out);
+        assertNotNull("excel file exists", out);
+      } catch (IOException e) {
+        fail("Threw an exception while attempting to write the workbook!");
+        e.printStackTrace();
+      }
     } catch (IOException e) {
-      e.printStackTrace();
       fail("Threw an exception while attempting to write the workbook!");
+      e.printStackTrace();
     }
   }
 }
