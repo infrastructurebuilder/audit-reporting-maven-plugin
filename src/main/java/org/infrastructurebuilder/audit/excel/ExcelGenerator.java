@@ -54,58 +54,43 @@ public final class ExcelGenerator {
     /*
      * sheets
      */
-    results.stream().forEach(result -> {
-      String sheetName = result.getName();
+    results.stream().forEach(resultsSet -> {
+      String sheetName = resultsSet.getName();
       XSSFSheet sheet = workbook.createSheet(sheetName);
 
       /*
        * headers
        */
-      List<String> eHeaders = new ArrayList<>();
-      eHeaders.addAll(result.getDescriptionHeaders());
-      int headerCellNum = 0;
+      List<String> headers = new ArrayList<>();
+      headers.addAll(resultsSet.getDescriptionHeaders());
+      int currentHeaderCellNumber = 0;
       Row headerRow = sheet.createRow(0);
-      for (String eHeader : eHeaders) {
-        Cell cell = headerRow.createCell(headerCellNum++);
-        cell.setCellValue(eHeader);
+      for (String header : headers) {
+        Cell cell = headerRow.createCell(currentHeaderCellNumber++);
+        cell.setCellValue(header);
       }
 
       /*
        * descriptions
        */
-      List<AuditResult> eDescriptions = new ArrayList<>();
-      List<String> eDescription = new ArrayList<>();
-      eDescriptions.addAll(result.getResults());
-      for (AuditResult description : eDescriptions) {
-        eDescription.addAll(description.getDescriptions());
-        int descriptionRowNum = 1;
-        int descriptionCellNum = 0;
-        Row descriptionRow = sheet.createRow(descriptionRowNum);
-        for (String finalDescription : eDescription) {
-          Cell cell = descriptionRow.createCell(descriptionCellNum);
-          cell.setCellValue(finalDescription);
-          descriptionCellNum++;
-          if (descriptionCellNum == headerCellNum) {
-            descriptionCellNum = 0;
-            descriptionRowNum++;
-            descriptionRow = sheet.createRow(descriptionRowNum);
-          }
+      int currentDescriptionRowNumber = 1;
+      for (AuditResult result : resultsSet.getResults()) {
+        Row descriptionRow = sheet.createRow(currentDescriptionRowNumber);
+        int currentDescriptionCellNumber = 0;
+        for (String description : result.getDescriptions()) {
+          Cell cell = descriptionRow.createCell(currentDescriptionCellNumber);
+          cell.setCellValue(description);
+          currentDescriptionCellNumber++;
         }
+        currentDescriptionRowNumber++;
       }
     });
+
     try (FileOutputStream out = new FileOutputStream(String.valueOf(output))) {
+      log.info("Writing excel file");
       workbook.write(out);
       workbook.close();
-      log.info("Excel file written successfully");
-    } catch (IOException e) {
-      e.printStackTrace();
-      log.error(String.valueOf(e));
-      throw new IOException(e);
+      log.info("Excel file written successfully!");
     }
   }
 }
-
-
-
-
-
