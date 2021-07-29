@@ -28,7 +28,7 @@ import java.nio.file.Path;
 import java.util.UUID;
 
 public class TestExcelGenerator {
-  private final static Logger log = LoggerFactory.getLogger(ExcelGenerator.class);
+  private final static Logger log = LoggerFactory.getLogger(TestExcelGenerator.class);
   private final TestingPathSupplier wps = new TestingPathSupplier();
   private Path path;
 
